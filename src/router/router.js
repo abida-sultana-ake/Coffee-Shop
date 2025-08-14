@@ -5,26 +5,37 @@ import Error from "../pages/Error/Error";
 import ContactUs from "../pages/Contact/contactUs";
 import About from "../pages/About/About";
 
+import BlogDetails from "../pages/Home/BlogDetails";
+import Blog from "../pages/Home/Blog";
+
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
     children: [
       {
-        path: "/", 
+        path: "/",
         Component: Home,
       },
       {
-        path: "*",
-        Component: Error,
+        path: "/about",
+        Component: About,
       },
       {
         path: "/contact",
         Component: ContactUs,
       },
       {
-        path: "/about",
-        Component: About,
+        path: "/blog",
+        Component: Blog,
+      },
+      {
+        path: "/blog/:id",
+        Component: BlogDetails,
+      },
+      {
+        path: "*",
+        Component: Error,
       },
     ],
   },

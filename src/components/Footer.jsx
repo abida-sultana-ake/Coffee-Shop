@@ -5,12 +5,28 @@ import {
   FaTwitter,
   FaEnvelope,
 } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const Footer = () => {
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
   return (
-    <footer className="bg-yellow-50 text-yellow-900  shadow-inner">
+    <footer className="bg-yellow-50 text-yellow-900 shadow-inner">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex flex-col md:flex-row justify-between gap-6">
+        <motion.div
+          className="flex flex-col md:flex-row justify-between gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+        >
           {/* Logo & Description */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
@@ -55,7 +71,7 @@ const Footer = () => {
             <h3 className="font-semibold text-yellow-900 mb-2">
               Connect with us
             </h3>
-            <div className="flex gap-3">
+            <div className="flex gap-3 text-xl">
               <a
                 href="https://www.facebook.com/abidasultanakhan"
                 className="hover:text-yellow-700 transition-colors"
@@ -81,12 +97,17 @@ const Footer = () => {
             <p className="text-yellow-800 mt-2">Email: info@beananddream.com</p>
             <p className="text-yellow-800">Phone: +880 1234 567 890</p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Copyright */}
-        <div className="mt-8 text-center text-yellow-700 border-t border-yellow-200 pt-4 text-sm">
+        <motion.div
+          className="mt-8 text-center text-yellow-700 border-t border-yellow-200 pt-4 text-sm"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, transition: { duration: 0.8 } }}
+          viewport={{ once: true }}
+        >
           &copy; {new Date().getFullYear()} Bean & Dream. All rights reserved.
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
