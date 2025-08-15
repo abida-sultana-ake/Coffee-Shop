@@ -1,15 +1,27 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const navLinkClasses = ({ isActive }) =>
     `hover:text-yellow-800 transition-colors ${
       isActive ? "text-yellow-900 font-semibold" : "text-yellow-700"
     }`;
+
+  const handleAuthClick = () => {
+    if (isLoggedIn) {
+      // Logout logic
+      setIsLoggedIn(false);
+      navigate("/"); // redirect to home after logout
+    } else {
+      // Navigate to login page
+      navigate("/login");
+    }
+  };
 
   return (
     <nav className="bg-yellow-50 shadow-md sticky top-0 z-50">
@@ -54,7 +66,7 @@ const Navbar = () => {
 
             {/* Login/Logout Button */}
             <button
-              onClick={() => setIsLoggedIn(!isLoggedIn)}
+              onClick={handleAuthClick}
               className={`w-full px-4 py-2 rounded-full font-semibold text-white transition-all duration-300 shadow-lg ${
                 isLoggedIn
                   ? "bg-red-600 hover:bg-red-700"
@@ -132,11 +144,11 @@ const Navbar = () => {
 
           {/* Mobile Login/Logout Button */}
           <button
-            onClick={() => setIsLoggedIn(!isLoggedIn)}
-            className={`btn w-full mt-2 px-4 py-2 rounded-full transition-all duration-300 ${
+            onClick={handleAuthClick}
+            className={`w-full mt-2 px-4 py-2 rounded-full font-semibold text-white transition-all duration-300 shadow-lg ${
               isLoggedIn
-                ? "btn-error hover:bg-red-600"
-                : "btn-primary hover:bg-yellow-600 text-white"
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400"
             }`}
           >
             {isLoggedIn ? "Logout" : "Login"}

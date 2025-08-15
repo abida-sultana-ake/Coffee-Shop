@@ -7,6 +7,8 @@ import About from "../pages/About/About";
 
 import BlogDetails from "../pages/Home/BlogDetails";
 import Blog from "../pages/Home/Blog";
+import Login from "../components/Login";
+import SignUp from "../components/SignUp";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         Component: ContactUs,
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/signup",
+        Component: SignUp,
       },
       {
         path: "/blog",
