@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase.config";
 import { AuthContext } from "./AuthContext";
 import CoffeeShopLoading from "../components/CoffeeShopLoading";
@@ -14,6 +14,20 @@ const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
+  const signInUser = (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password)
+  };
+
+  onAuthStateChanged(auth, (currentUser) => {
+    if(currentUser) {
+      console.log("has current user ", currentUser)
+    }
+    else{
+      console.log("ummm current user", currentUser)
+    }
+  })
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -27,6 +41,7 @@ const AuthProvider = ({ children }) => {
     user,
     loading,
     createUser,
+    signInUser,
   };
 
   if (loading) {

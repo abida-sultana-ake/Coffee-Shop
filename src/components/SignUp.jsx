@@ -4,20 +4,20 @@ import { FaCoffee, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../contexts/AuthContext";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 const SignUp = () => {
-  const { createUser } = useContext(AuthContext); 
+  const { createUser } = useContext(AuthContext);
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const isStrongPassword = (pwd) => {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+  const isStrongPassword = (pwd) =>
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
       pwd
     );
-  };
 
   const passwordsMatch = () => password === confirmPassword;
 
@@ -72,19 +72,42 @@ const SignUp = () => {
       });
   };
 
+  // Motion variants
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  const buttonHover = { scale: 1.05, transition: { duration: 0.2 } };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-8">
+      <motion.div
+        className="bg-white shadow-xl rounded-2xl w-full max-w-md p-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Logo */}
-        <div className="flex flex-col items-center mb-6">
-          <FaCoffee className="text-5xl text-amber-700 mb-2" />
+        <motion.div
+          className="flex flex-col items-center mb-6"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <FaCoffee className="text-5xl text-amber-700 mb-2 animate-bounce" />
           <h1 className="text-2xl font-bold text-amber-800">Coffee Haven</h1>
           <p className="text-sm text-amber-600">Create your account</p>
-        </div>
+        </motion.div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+          >
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Name
             </label>
@@ -95,9 +118,14 @@ const SignUp = () => {
               className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Email
             </label>
@@ -108,10 +136,14 @@ const SignUp = () => {
               className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
             />
-          </div>
+          </motion.div>
 
           {/* Password */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Password
             </label>
@@ -144,10 +176,14 @@ const SignUp = () => {
                   : "Weak password, use 8+ chars, uppercase, lowercase, number & symbol"}
               </p>
             )}
-          </div>
+          </motion.div>
 
           {/* Confirm Password */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Confirm Password
             </label>
@@ -169,47 +205,64 @@ const SignUp = () => {
               </button>
             </div>
             {confirmPassword && !passwordsMatch() && (
-              <p className="mt-1 text-sm text-red-600">Passwords do not match</p>
+              <p className="mt-1 text-sm text-red-600">
+                Passwords do not match
+              </p>
             )}
-          </div>
+          </motion.div>
 
           {/* Submit */}
-          <button
+          <motion.button
             type="submit"
             className="w-full bg-amber-700 text-white py-2 rounded-lg hover:bg-amber-800 transition"
+            whileHover={buttonHover}
+            whileTap={{ scale: 0.95 }}
           >
             Sign Up
-          </button>
+          </motion.button>
         </form>
 
         {/* Divider */}
-        <div className="flex items-center my-6">
+        <motion.div
+          className="flex items-center my-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
           <hr className="flex-grow border-amber-300" />
           <span className="px-2 text-amber-500">or</span>
           <hr className="flex-grow border-amber-300" />
-        </div>
+        </motion.div>
 
         {/* Google signup */}
-        <button className="w-full flex items-center justify-center gap-2 border border-amber-400 py-2 rounded-lg hover:bg-amber-100 text-amber-700 transition">
+        <motion.button
+          className="w-full flex items-center justify-center gap-2 border border-amber-400 py-2 rounded-lg hover:bg-amber-100 text-amber-700 transition"
+          whileHover={buttonHover}
+          whileTap={{ scale: 0.95 }}
+        >
           <FcGoogle size={18} />
           Continue with Google
-        </button>
+        </motion.button>
 
         {/* Login link */}
-        <p className="text-center text-sm text-amber-600 mt-4">
+        <motion.p
+          className="text-center text-sm text-amber-600 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
           Already have an account?{" "}
           <Link to="/login" className="font-semibold hover:underline">
             Login
           </Link>
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
     </div>
   );
 };
 
 export default SignUp;
 
-
-// test@gmail.com
-// Test12345
 // Test
+// test@gmail.com
+//Test@123456
