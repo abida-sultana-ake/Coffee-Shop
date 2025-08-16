@@ -9,6 +9,7 @@ import BlogDetails from "../pages/Home/BlogDetails";
 import Blog from "../pages/Home/Blog";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
+import Menu from "../pages/Menu/Menu";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         Component: Home,
+      },
+      {
+        path: "/menu",
+        Component: Menu,
       },
       {
         path: "/about",

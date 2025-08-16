@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import { FaCoffee, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaCoffee, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [password, setPassword] = useState("");
@@ -64,14 +65,14 @@ const Login = () => {
                 }`}
               >
                 {isStrongPassword(password)
-                  ? "Strong password ✅"
-                  : "Weak password, use 8+ chars, uppercase, lowercase, number & symbol ❌"}
+                  ? "Strong password"
+                  : "Weak password, use 8+ chars, uppercase, lowercase, number & symbol"}
               </p>
             )}
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center text-amber-600 gap-2">
               <input type="checkbox" className="text-amber-500" />
               Remember me
             </label>
@@ -99,8 +100,8 @@ const Login = () => {
         </div>
 
         {/* Social login */}
-        <button className="w-full flex items-center justify-center gap-2 border border-amber-400 py-2 rounded-lg hover:bg-amber-100 transition">
-          <FaGoogle size={18} className="border-amber-400" />
+        <button className="w-full flex items-center justify-center gap-2 border border-amber-400 py-2 rounded-lg hover:bg-amber-100 text-amber-700 transition">
+          <FcGoogle size={18} className="border-amber-400" />
           Continue with Google
         </button>
 

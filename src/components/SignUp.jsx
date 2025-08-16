@@ -1,15 +1,46 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import { FaCoffee, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaCoffee, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import Swal from "sweetalert2";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/firebase.config";
 
 const SignUp = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(name, email, password);
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log("User created:", user);
+        Swal.fire({
+          title: "Success!",
+          text: "Your account has been created.",
+          icon: "success",
+          confirmButtonColor: "#d97706",
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          confirmButtonColor: "#b91c1c",
+        });
+      });
+  };
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const isStrongPassword = (pwd) => {
-    // Minimum 8 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
       pwd
     );
@@ -28,13 +59,26 @@ const SignUp = () => {
         </div>
 
         {/* Form */}
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block mb-1 text-sm font-medium text-amber-700">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Abida Sultana"
+              className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+              required
+            />
+          </div>
           <div>
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Email
             </label>
             <input
               type="email"
+              name="email"
               placeholder="you@example.com"
               className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
@@ -48,6 +92,7 @@ const SignUp = () => {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="••••••••"
                 className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 pr-10"
                 value={password}
@@ -65,14 +110,12 @@ const SignUp = () => {
             {password && (
               <p
                 className={`mt-1 text-sm ${
-                  isStrongPassword(password)
-                    ? "text-green-600"
-                    : "text-red-600"
+                  isStrongPassword(password) ? "text-green-600" : "text-red-600"
                 }`}
               >
                 {isStrongPassword(password)
-                  ? "Strong password ✅"
-                  : "Weak password, use 8+ chars, uppercase, lowercase, number & symbol ❌"}
+                  ? "Strong password"
+                  : "Weak password, use 8+ chars, uppercase, lowercase, number & symbol"}
               </p>
             )}
           </div>
@@ -100,7 +143,7 @@ const SignUp = () => {
             </div>
             {confirmPassword && !passwordsMatch() && (
               <p className="mt-1 text-sm text-red-600">
-                Passwords do not match ❌
+                Passwords do not match
               </p>
             )}
           </div>
@@ -121,8 +164,9 @@ const SignUp = () => {
         </div>
 
         {/* Google signup */}
-        <button className="w-full flex items-center justify-center gap-2 border border-amber-400 py-2 rounded-lg hover:bg-amber-100 transition">
-          <FaGoogle size={18} /> Sign up with Google
+        <button className="w-full flex items-center justify-center gap-2 border border-amber-400 py-2 rounded-lg hover:bg-amber-100 text-amber-700 transition">
+          <FcGoogle size={18} className="border-amber-400" />
+          Continue with Google
         </button>
 
         {/* Login link */}
@@ -138,3 +182,7 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+// test@gmail.com
+// Test12345
+// Test

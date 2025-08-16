@@ -16,9 +16,8 @@ const Navbar = () => {
     if (isLoggedIn) {
       // Logout logic
       setIsLoggedIn(false);
-      navigate("/"); // redirect to home after logout
+      navigate("/"); 
     } else {
-      // Navigate to login page
       navigate("/login");
     }
   };
