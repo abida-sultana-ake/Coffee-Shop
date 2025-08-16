@@ -1,39 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router";
 import { FaCoffee, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { AuthContext } from "../contexts/AuthContext";
 import Swal from "sweetalert2";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase/firebase.config";
 
 const SignUp = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    console.log(name, email, password);
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log("User created:", user);
-        Swal.fire({
-          title: "Success!",
-          text: "Your account has been created.",
-          icon: "success",
-          confirmButtonColor: "#d97706",
-        });
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: "Error!",
-          text: error.message,
-          icon: "error",
-          confirmButtonColor: "#b91c1c",
-        });
-      });
-  };
+  const { createUser } = useContext(AuthContext); 
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -47,6 +20,57 @@ const SignUp = () => {
   };
 
   const passwordsMatch = () => password === confirmPassword;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+
+    if (!isStrongPassword(password)) {
+      Swal.fire({
+        title: "Weak Password!",
+        text: "Password must include uppercase, lowercase, number & special character (min 8 chars).",
+        icon: "warning",
+        confirmButtonColor: "#d97706",
+      });
+      return;
+    }
+
+    if (!passwordsMatch()) {
+      Swal.fire({
+        title: "Error!",
+        text: "Passwords do not match.",
+        icon: "error",
+        confirmButtonColor: "#b91c1c",
+      });
+      return;
+    }
+
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log("User created:", user);
+
+        Swal.fire({
+          title: "Success!",
+          text: `Welcome ${name}, your account has been created.`,
+          icon: "success",
+          confirmButtonColor: "#d97706",
+        });
+
+        e.target.reset();
+        setPassword("");
+        setConfirmPassword("");
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          confirmButtonColor: "#b91c1c",
+        });
+      });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -72,6 +96,7 @@ const SignUp = () => {
               required
             />
           </div>
+
           <div>
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Email
@@ -85,6 +110,7 @@ const SignUp = () => {
             />
           </div>
 
+          {/* Password */}
           <div>
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Password
@@ -120,6 +146,7 @@ const SignUp = () => {
             )}
           </div>
 
+          {/* Confirm Password */}
           <div>
             <label className="block mb-1 text-sm font-medium text-amber-700">
               Confirm Password
@@ -142,12 +169,11 @@ const SignUp = () => {
               </button>
             </div>
             {confirmPassword && !passwordsMatch() && (
-              <p className="mt-1 text-sm text-red-600">
-                Passwords do not match
-              </p>
+              <p className="mt-1 text-sm text-red-600">Passwords do not match</p>
             )}
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             className="w-full bg-amber-700 text-white py-2 rounded-lg hover:bg-amber-800 transition"
@@ -165,7 +191,7 @@ const SignUp = () => {
 
         {/* Google signup */}
         <button className="w-full flex items-center justify-center gap-2 border border-amber-400 py-2 rounded-lg hover:bg-amber-100 text-amber-700 transition">
-          <FcGoogle size={18} className="border-amber-400" />
+          <FcGoogle size={18} />
           Continue with Google
         </button>
 
@@ -182,6 +208,7 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
 
 // test@gmail.com
 // Test12345
